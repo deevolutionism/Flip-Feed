@@ -1,0 +1,22 @@
+{
+  "name": "anonymousfb",
+  "version": "1.0.0",
+  "description": "post anonymously on facebook",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deevolutionism/anonymous_fb_extension.git"
+  },
+  "author": "Gentry Demchak",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/deevolutionism/anonymous_fb_extension/issues"
+  },
+  "homepage": "https://github.com/deevolutionism/anonymous_fb_extension#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}
