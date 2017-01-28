@@ -22,7 +22,7 @@ class Index extends Component {
   getData() {
     $.ajax({
       type: "GET",
-      url: "https://gentrydemchak.com/posts",
+      url: "https://gentrydemchak.com/api/posts",
       dataType: "json",
       success: (data) => {
         console.log('Got data');
@@ -52,7 +52,7 @@ class Index extends Component {
         }
       }
     }; // Implemented elsewhere.
-    xhr.open("GET",'https://gentrydemchak.com/posts', true);
+    xhr.open("GET",'https://gentrydemchak.com/api/posts', true);
     xhr.send();
   }
 
@@ -62,16 +62,35 @@ class Index extends Component {
     if (val){
       $.ajax({
        method: "PUT",
-       url: "https://gentrydemchak.com/createPost",
+       url: "https://gentrydemchak.com/api/createPost",
        dataType: 'JSON',
        data: { text: val }
      })
      .done( ( msg ) => {
-         console.log('payload sent');
-         $('.anon_input').text('');
-         this.setState({
-           posts: this.getData()
-         });
+       console.log('payload sent');
+       $('.anon_input').text('');
+       this.setState({
+         posts: this.getData()
+       });
+     });
+    }
+  }
+
+  handleSubimtComment(comment) {
+    if (comment) {
+      console.log(comment);
+      $.ajax({
+       method: "PUT",
+       url: "https://gentrydemchak.com/api/submitComment",
+       dataType: 'JSON',
+       data: comment
+     })
+     .done( ( msg ) => {
+       console.log('payload sent');
+       $('.anon_comment_input').text('');
+       this.setState({
+         posts: this.getData()
+       });
      });
     }
   }
@@ -122,7 +141,7 @@ class Index extends Component {
           >
           </span>
           <p className="composer_input">This post will be completely anonymous. Speak your mind.</p>
-          <button className="anon_submit" id="postButton" type="button" onClick={this.submitPost}>Post</button>
+          <button className="anon_button" id="postButton" type="button" onClick={this.submitPost}>Post</button>
         </div>
         <ContentList posts={posts}/>
       </div>

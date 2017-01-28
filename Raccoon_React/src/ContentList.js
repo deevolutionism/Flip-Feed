@@ -4,6 +4,11 @@ import Post from './Post';
 export default class ContentList extends React.Component {
   constructor(props){
     super(props)
+    this.handleSubmitComment = this.handleSubmitComment.bind(this);
+  }
+
+  handleSubmitComment(data) {
+    this.props.handleCommentSubmit(data)
   }
 
   render() {
@@ -17,6 +22,8 @@ export default class ContentList extends React.Component {
             upvote={post.upvotes}
             downvote={post.downvotes}
             id={post.time}
+            key={post._id}
+            handleSubmitComment={this.handleSubmitComment}
           />
         );
       });

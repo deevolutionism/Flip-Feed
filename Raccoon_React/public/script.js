@@ -100,7 +100,7 @@
 	
 	      _jquery2.default.ajax({
 	        type: "GET",
-	        url: "https://gentrydemchak.com/posts",
+	        url: "https://gentrydemchak.com/api/posts",
 	        dataType: "json",
 	        success: function success(data) {
 	          console.log('Got data');
@@ -131,7 +131,7 @@
 	          }
 	        }
 	      }; // Implemented elsewhere.
-	      xhr.open("GET", 'https://gentrydemchak.com/posts', true);
+	      xhr.open("GET", 'https://gentrydemchak.com/api/posts', true);
 	      xhr.send();
 	    }
 	  }, {
@@ -144,7 +144,7 @@
 	      if (val) {
 	        _jquery2.default.ajax({
 	          method: "PUT",
-	          url: "https://gentrydemchak.com/createPost",
+	          url: "https://gentrydemchak.com/api/createPost",
 	          dataType: 'JSON',
 	          data: { text: val }
 	        }).done(function (msg) {
@@ -152,6 +152,27 @@
 	          (0, _jquery2.default)('.anon_input').text('');
 	          _this3.setState({
 	            posts: _this3.getData()
+	          });
+	        });
+	      }
+	    }
+	  }, {
+	    key: "handleSubimtComment",
+	    value: function handleSubimtComment(comment) {
+	      var _this4 = this;
+	
+	      if (comment) {
+	        console.log(comment);
+	        _jquery2.default.ajax({
+	          method: "PUT",
+	          url: "https://gentrydemchak.com/api/submitComment",
+	          dataType: 'JSON',
+	          data: comment
+	        }).done(function (msg) {
+	          console.log('payload sent');
+	          (0, _jquery2.default)('.anon_comment_input').text('');
+	          _this4.setState({
+	            posts: _this4.getData()
 	          });
 	        });
 	      }
@@ -214,7 +235,7 @@
 	          ),
 	          _react2.default.createElement(
 	            "button",
-	            { className: "anon_submit", id: "postButton", type: "button", onClick: this.submitPost },
+	            { className: "anon_button", id: "postButton", type: "button", onClick: this.submitPost },
 	            "Post"
 	          )
 	        ),
@@ -21688,12 +21709,22 @@
 	  function ContentList(props) {
 	    _classCallCheck(this, ContentList);
 	
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(ContentList).call(this, props));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ContentList).call(this, props));
+	
+	    _this.handleSubmitComment = _this.handleSubmitComment.bind(_this);
+	    return _this;
 	  }
 	
 	  _createClass(ContentList, [{
+	    key: 'handleSubmitComment',
+	    value: function handleSubmitComment(data) {
+	      this.props.handleCommentSubmit(data);
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var _this2 = this;
+	
 	      if (this.props.posts) {
 	        var posts = [];
 	        console.log(this.props.posts);
@@ -21702,7 +21733,9 @@
 	            text: post.text,
 	            upvote: post.upvotes,
 	            downvote: post.downvotes,
-	            id: post.time
+	            id: post.time,
+	            key: post._id,
+	            handleSubmitComment: _this2.handleSubmitComment
 	          }));
 	        });
 	      }
@@ -21736,6 +21769,10 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _PostCommentsList = __webpack_require__(178);
+	
+	var _PostCommentsList2 = _interopRequireDefault(_PostCommentsList);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -21750,17 +21787,57 @@
 	  function Post(props) {
 	    _classCallCheck(this, Post);
 	
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Post).call(this, props));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Post).call(this, props));
+	
+	    var showCommentsBool = 0;
+	    _this.handleSubmitComment = _this.handleSubmitComment.bind(_this);
+	    return _this;
 	  }
 	
+	  // showComments() {
+	  //   showCommentsBool = !showCommentsBool;
+	  //   if(showCommentsBool){
+	  //     $('.post_comments_list').show();
+	  //   } else {
+	  //     $('.post_comments_list').hide();
+	  //   }
+	  // }
+	
 	  _createClass(Post, [{
+	    key: 'handleSubmitComment',
+	    value: function handleSubmitComment() {
+	      var val = $('.anon_comment_input').text();
+	      console.log(val);
+	      console.log('clicked');
+	      this.props.handleSubimtComment({ _id: this.props.id, comment: val });
+	    }
+	  }, {
+	    key: 'shouldComponentUpdate',
+	    value: function shouldComponentUpdate(nextProps, nextState) {
+	      //consider using immutable.js
+	      //https://facebook.github.io/react/docs/optimizing-performance.html
+	      if (this.props.comments) {
+	        if (this.props.comments.length !== nextProps.comments.length) {
+	          return true;
+	        } else {
+	          return false;
+	        }
+	      }
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var icon = chrome.extension.getURL('icon-40.png');
+	      var uid = this.props._id;
+	      if (this.props.comments) {
+	        var comments = this.props.comments.length;
+	      } else {
+	        var comments = '';
+	      }
 	
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'anon_compose anon_container', id: this.props.time },
+	        { className: 'anon_compose anon_container', id: this.props.timeStamp },
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'op_container' },
@@ -21776,7 +21853,7 @@
 	            _react2.default.createElement(
 	              'p',
 	              { className: 'time' },
-	              this.props.time
+	              this.props.timeStamp
 	            )
 	          )
 	        ),
@@ -21792,13 +21869,21 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'interactions_container' },
+	          _react2.default.createElement('span', {
+	            className: 'anon_comment_input',
+	            'data-ph': 'Write a comment... ',
+	            onChange: this.handleInputChange,
+	            contentEditable: 'true'
+	          }),
 	          _react2.default.createElement(
 	            'button',
-	            { className: 'anon_comment_button', onClick: this.props.submitComment },
-	            'Comment'
+	            { className: 'anon_post_comment anon_button', onClick: this.handleSubimtComment },
+	            'Post comment'
 	          )
 	        ),
-	        _react2.default.createElement(PostCommentsList, null)
+	        _react2.default.createElement(_PostCommentsList2.default, { className: 'post_comments_list',
+	          comments: this.props.comments
+	        })
 	      );
 	    }
 	  }]);
@@ -31887,6 +31972,143 @@
 	return jQuery;
 	} );
 
+
+/***/ },
+/* 178 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _PostComment = __webpack_require__(179);
+	
+	var _PostComment2 = _interopRequireDefault(_PostComment);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var ContentList = function (_React$Component) {
+	  _inherits(ContentList, _React$Component);
+	
+	  function ContentList(props) {
+	    _classCallCheck(this, ContentList);
+	
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(ContentList).call(this, props));
+	  }
+	
+	  _createClass(ContentList, [{
+	    key: 'handleCommentSubmit',
+	    value: function handleCommentSubmit(commentData) {
+	      this.props.handleCommentSubmit(commentData);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      if (this.props.comments) {
+	        var postComments = [];
+	        this.props.comments.forEach(function (comment) {
+	          postComments.push(_react2.default.createElement(_PostComment2.default, {
+	            text: comment,
+	            timeStamp: comment,
+	            id: comment,
+	            key: comment
+	          }));
+	        });
+	      }
+	
+	      return _react2.default.createElement(
+	        'div',
+	        { id: 'comments_container' },
+	        postComments
+	      );
+	    }
+	  }]);
+	
+	  return ContentList;
+	}(_react2.default.Component);
+	
+	exports.default = ContentList;
+
+/***/ },
+/* 179 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Post = function (_React$Component) {
+	  _inherits(Post, _React$Component);
+	
+	  function Post(props) {
+	    _classCallCheck(this, Post);
+	
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Post).call(this, props));
+	
+	    var showCommentsBool = 0;
+	    return _this;
+	  }
+	
+	  _createClass(Post, [{
+	    key: "render",
+	    value: function render() {
+	
+	      return _react2.default.createElement(
+	        "div",
+	        { className: "anon_comment" },
+	        _react2.default.createElement(
+	          "p",
+	          null,
+	          this.props.id
+	        ),
+	        _react2.default.createElement(
+	          "p",
+	          null,
+	          this.props.timeStamp
+	        ),
+	        _react2.default.createElement(
+	          "p",
+	          null,
+	          this.props.text
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return Post;
+	}(_react2.default.Component);
+	
+	exports.default = Post;
 
 /***/ }
 /******/ ]);

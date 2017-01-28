@@ -1,3 +1,5 @@
-node_modules
+/Pre_Alpha/node_modules
 .DS_Store
-public
+/Raccoon_React/public
+/Raccoon_React/node_modules
+
