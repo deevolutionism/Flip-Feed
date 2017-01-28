@@ -5,10 +5,12 @@ Raccoon is a browser extension for Facebook that creates an anonymous posting bo
 
 #### Some project goals
 * Anonymous commenting and posting
+* Uncensored
 * Ephemeral
 * Crowd moderated
 * Communicate outside the bubble
 * Prosocial disinhibition
 * Liberate users from Facebook rules.
+* Anti-curation
 
 ![raccoon screen shot](./Assets/raccoon_screen.png)
