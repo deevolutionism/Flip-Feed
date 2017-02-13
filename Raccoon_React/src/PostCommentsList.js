@@ -13,16 +13,26 @@ export default class ContentList extends React.Component {
   render() {
     if(this.props.comments){
       var postComments = [];
-      this.props.comments.forEach( (comment) => {
-        postComments.push(
-          <PostComment
-            text={comment}
-            timeStamp={comment}
-            id={comment}
-            key={comment}
-          />
-        )
-      });
+
+      this.props.comments.map( (comment) =>
+        <PostComment
+          text={comment}
+          timeStamp={comment}
+          id={comment}
+          key={comment}
+        />
+      )
+
+      // this.props.comments.forEach( (comment) => {
+      //   postComments.push(
+      //     <PostComment
+      //       text={comment}
+      //       timeStamp={comment}
+      //       id={comment}
+      //       key={comment}
+      //     />
+      //   )
+      // });
     }
 
     return (

@@ -92,7 +92,9 @@ class Index extends Component {
          posts: this.getData()
        });
      });
-    }
+   } else {
+     console.log('comment button pressed');
+   }
   }
 
   handleInputChange(event) {
@@ -143,7 +145,7 @@ class Index extends Component {
           <p className="composer_input">This post will be completely anonymous. Speak your mind.</p>
           <button className="anon_button" id="postButton" type="button" onClick={this.submitPost}>Post</button>
         </div>
-        <ContentList posts={posts}/>
+        <ContentList posts={posts} handleSubmitComment={this.handleSubmitComment}/>
       </div>
     )
   }

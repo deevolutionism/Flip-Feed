@@ -4,12 +4,12 @@ import Post from './Post';
 export default class ContentList extends React.Component {
   constructor(props){
     super(props)
-    this.handleSubmitComment = this.handleSubmitComment.bind(this);
+    // this.handleSubmitComment = this.handleSubmitComment.bind(this);
   }
 
-  handleSubmitComment(data) {
-    this.props.handleCommentSubmit(data)
-  }
+  // handleSubmitComment(comment) {
+  //   this.props.handleSubmitComment(comment);
+  // }
 
   render() {
     if(this.props.posts){
@@ -18,12 +18,9 @@ export default class ContentList extends React.Component {
       this.props.posts.forEach( (post) => {
         posts.push(
           <Post
-            text={post.text}
-            upvote={post.upvotes}
-            downvote={post.downvotes}
-            id={post.time}
+            post={post}
             key={post._id}
-            handleSubmitComment={this.handleSubmitComment}
+            handleSubmitComment={this.props.handleSubmitComment}
           />
         );
       });
