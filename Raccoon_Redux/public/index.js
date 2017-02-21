@@ -66,7 +66,15 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var store = (0, _redux.createStore)(_board2.default, window.STATE_FROM_SERVER);
+	var initialState = [{
+	  text: 'hello',
+	  id: 1
+	}, {
+	  text: 'world',
+	  id: 2
+	}];
+	
+	var store = (0, _redux.createStore)(_board2.default, initialState);
 	
 	(0, _reactDom.render)(_react2.default.createElement(
 	  _reactRedux.Provider,
@@ -24337,27 +24345,27 @@
 	
 	/*
 	
-	reducers go here. These specify how state should respond to actions
-	
+	reducers go here. These specify how application state should respond to actions
+	This recieves an action object and then determines what to do with the data.
 	*/
 	
 	var board = function board() {
 	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 	  var action = arguments[1];
 	
+	  console.log('reducer recieved action:');
+	  console.log(action);
 	  switch (action.type) {
 	    case 'ADD_POST':
-	      //
+	      //This action initialized by Composer.js
+	      console.log(action);
 	      return [].concat(_toConsumableArray(state), [{
-	        id: new Date.time(),
-	        text: action.text
-	      }]);
-	    case 'REPLY':
-	      return [].concat(_toConsumableArray(state), [{
-	        id: new Date.time(),
+	        id: action.id,
 	        text: action.text
 	      }]);
 	    default:
+	      console.log('store:');
+	      console.log(state);
 	      return state;
 	  }
 	};
@@ -24374,8 +24382,6 @@
 	  value: true
 	});
 	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
 	var _react = __webpack_require__(1);
 	
 	var _react2 = _interopRequireDefault(_react);
@@ -24384,41 +24390,25 @@
 	
 	var _Composer2 = _interopRequireDefault(_Composer);
 	
-	var _Feed = __webpack_require__(236);
+	var _ShowPosts = __webpack_require__(237);
+	
+	var _ShowPosts2 = _interopRequireDefault(_ShowPosts);
+	
+	var _Feed = __webpack_require__(238);
 	
 	var _Feed2 = _interopRequireDefault(_Feed);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	var App = function App() {
 	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var App = function (_React$Component) {
-	  _inherits(App, _React$Component);
-	
-	  function App(props) {
-	    _classCallCheck(this, App);
-	
-	    return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
-	  }
-	
-	  _createClass(App, [{
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        _react2.default.createElement(_Composer2.default, null),
-	        _react2.default.createElement(_Feed2.default, null)
-	      );
-	    }
-	  }]);
-	
-	  return App;
-	}(_react2.default.Component);
+	  return _react2.default.createElement(
+	    'div',
+	    null,
+	    _react2.default.createElement(_Composer2.default, null),
+	    _react2.default.createElement(_ShowPosts2.default, null)
+	  );
+	};
 	
 	exports.default = App;
 
@@ -24432,8 +24422,6 @@
 	  value: true
 	});
 	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
 	var _react = __webpack_require__(1);
 	
 	var _react2 = _interopRequireDefault(_react);
@@ -24442,112 +24430,82 @@
 	
 	var _actions = __webpack_require__(234);
 	
-	var _jquery = __webpack_require__(235);
+	var _jquery = __webpack_require__(236);
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	var getInput = function getInput() {
+	  var val = (0, _jquery2.default)('.anon_input').text().trim();
+	  (0, _jquery2.default)('.anon_input').text('');
+	  console.log('got input: ' + val);
+	  return val;
+	};
 	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	var generateID = function generateID() {
+	  var d = new Date();
+	  return d.getTime();
+	};
 	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	var Composer = function Composer(_ref) {
+	  var dispatch = _ref.dispatch;
 	
-	var Composer = function (_React$Component) {
-	  _inherits(Composer, _React$Component);
 	
-	  function Composer(props) {
-	    _classCallCheck(this, Composer);
-	
-	    var _this = _possibleConstructorReturn(this, (Composer.__proto__ || Object.getPrototypeOf(Composer)).call(this, props));
-	
-	    _this.addPost = _this.addPost.bind(_this);
-	    return _this;
-	  }
-	
-	  _createClass(Composer, [{
-	    key: 'addPost',
-	    value: function addPost() {
-	      var val = (0, _jquery2.default)('.anon_input').text().trim();
-	      this.props.dispatch((0, _actions.addPost)(val));
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var icon = 'icon-48.png';
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'anon_composer' },
-	          _react2.default.createElement('img', { src: icon }),
-	          _react2.default.createElement('span', {
-	            className: 'anon_input',
-	            'data-ph': 'What\'s on your mind?',
-	            onChange: this.handleInputChange,
-	            onKeyDown: this.handleEnter,
-	            contentEditable: 'true'
-	          }),
-	          _react2.default.createElement(
-	            'p',
-	            { className: 'composer_input' },
-	            'This post will be completely anonymous. Speak your mind.'
-	          ),
-	          _react2.default.createElement(
-	            'button',
-	            { className: 'anon_button', id: 'postButton', type: 'button', onClick: this.addPost() },
-	            'Post'
-	          )
-	        )
-	      );
-	    }
-	  }]);
-	
-	  return Composer;
-	}(_react2.default.Component);
+	  var icon = 'icon-48.png';
+	  return _react2.default.createElement(
+	    'div',
+	    null,
+	    _react2.default.createElement(
+	      'div',
+	      { className: 'anon_composer' },
+	      _react2.default.createElement('img', { src: icon }),
+	      _react2.default.createElement('span', {
+	        className: 'anon_input',
+	        'data-ph': 'What\'s on your mind?',
+	        contentEditable: 'true'
+	      }),
+	      _react2.default.createElement(
+	        'p',
+	        { className: 'composer_input' },
+	        'This post will be completely anonymous. Speak your mind.'
+	      ),
+	      _react2.default.createElement(
+	        'button',
+	        { className: 'anon_button', id: 'postButton', type: 'button', onClick: function onClick() {
+	            dispatch((0, _actions.addPost)(getInput(), generateID()));
+	          } },
+	        'Post'
+	      )
+	    )
+	  );
+	};
 	
 	exports.default = (0, _reactRedux.connect)()(Composer);
 
 /***/ },
 /* 234 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.ReportOptions = exports.VotingOptions = undefined;
 	exports.addPost = addPost;
 	exports.reply = reply;
 	exports.vote = vote;
 	exports.report = report;
+	
+	var _types = __webpack_require__(235);
+	
 	// A C T I O N  T Y P E S
 	
 	/*
-	Actions are used by dispatchers to trigger events.
+	Actions are used by dispatchers to trigger events. The content
+	is sent to the reducers which then handle state.
 	*/
-	
-	/*
-	Composer actions:
-	-SUBMIT POST
-	*/
-	
-	var ADD_POST = exports.ADD_POST = 'POST';
-	
-	/*
-	Feed actions:
-	-REPLY TO POST
-	-SUBMIT MODERATION
-	-REPORT
-	-UPVOTE
-	-DOWNVOTE
-	*/
-	
-	var REPLY = exports.REPLY = 'REPLY';
-	var REPORT = exports.REPORT = 'REPORT';
-	var VOTE = exports.VOTE = 'VOTE';
 	
 	// C O N S T A N T S
 	
@@ -24564,34 +24522,57 @@
 	
 	// A C T I O N  C R E A T O R S
 	
-	function addPost(text) {
+	function addPost(text, id) {
+	  console.log("action: ADD_POST, text: " + text);
 	  return {
-	    type: ADD_POST,
-	    id: function id() {
-	      var d = new Date();return d.getTime();
-	    },
+	    type: _types.ADD_POST,
+	    id: id,
 	    text: text
 	  };
 	}
 	
 	function reply(id, text) {
 	  return {
-	    type: REPLY,
+	    type: _types.REPLY,
 	    id: id,
 	    text: text
 	  };
 	}
 	
 	function vote(options) {
-	  return { type: VOTE, options: options };
+	  return { type: _types.VOTE, options: options };
 	}
 	
 	function report(flag) {
-	  return { type: REPORT, flag: flag };
+	  return { type: _types.REPORT, flag: flag };
 	}
 
 /***/ },
 /* 235 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var ADD_POST = exports.ADD_POST = 'ADD_POST';
+	
+	/*
+	Feed actions:
+	-REPLY TO POST
+	-SUBMIT MODERATION
+	-REPORT
+	-UPVOTE
+	-DOWNVOTE
+	*/
+	
+	var REPLY = exports.REPLY = 'REPLY';
+	var REPORT = exports.REPORT = 'REPORT';
+	var VOTE = exports.VOTE = 'VOTE';
+
+/***/ },
+/* 236 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -34817,7 +34798,7 @@
 
 
 /***/ },
-/* 236 */
+/* 237 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34826,7 +34807,129 @@
 	  value: true
 	});
 	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	var _reactRedux = __webpack_require__(183);
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _actions = __webpack_require__(234);
+	
+	var _Feed = __webpack_require__(238);
+	
+	var _Feed2 = _interopRequireDefault(_Feed);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	//get all posts from state
+	
+	// const getPosts = ({posts}) => {
+	//   return posts
+	// }
+	
+	// map state to props
+	
+	/*
+	This container is for handling the state of the Feed component
+	*/
+	var mapStateToProps = function mapStateToProps(state) {
+	  console.log('recieved state');
+	  console.log(state);
+	  return {
+	    posts: state
+	  };
+	};
+	
+	// map dispatch to props
+	// replies?
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	  return {};
+	};
+	
+	//connect to redux store
+	
+	var ShowPosts = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_Feed2.default);
+	
+	// export
+	
+	exports.default = ShowPosts;
+
+/***/ },
+/* 238 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _Post = __webpack_require__(239);
+	
+	var _Post2 = _interopRequireDefault(_Post);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	/* Generates a list of posts. */
+	
+	var Feed = function Feed(_ref) {
+	  var posts = _ref.posts;
+	
+	
+	  var postlist = [];
+	
+	  if (posts) {
+	
+	    posts.forEach(function (post) {
+	      console.log('generating post');
+	      console.log(post);
+	      postlist.push(_react2.default.createElement(_Post2.default, {
+	        key: post.id,
+	        text: post.text
+	      }));
+	    });
+	  }
+	
+	  console.log('rendering: ' + posts);
+	  return _react2.default.createElement(
+	    'div',
+	    null,
+	    postlist
+	  );
+	};
+	
+	// {
+	//   posts.map( post =>
+	//     <Post
+	//       key={post.id}
+	//       text={post.text}
+	//       {...post}
+	//     />
+	//   )
+	// }
+	
+	// Feed.propTypes = {
+	//   posts: PropTypes.arrayOf(PropTypes.shape({
+	//     id:PropTypes.number.isRequired,
+	//     text:PropTypes.string.isRequired
+	//   }).isRequired).isRequired
+	// }
+	
+	exports.default = Feed;
+
+/***/ },
+/* 239 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 	
 	var _react = __webpack_require__(1);
 	
@@ -34834,33 +34937,66 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	var Post = function Post(_ref) {
+	  var text = _ref.text,
+	      id = _ref.id;
 	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	  var icon = 'icon-48.png';
+	  return _react2.default.createElement(
+	    'div',
+	    { className: 'anon_compose anon_container', id: id },
+	    _react2.default.createElement(
+	      'div',
+	      { className: 'op_container' },
+	      _react2.default.createElement('img', { className: 'icon', src: icon }),
+	      _react2.default.createElement(
+	        'div',
+	        { className: 'op' },
+	        _react2.default.createElement(
+	          'p',
+	          { className: 'name' },
+	          ' Racoon'
+	        ),
+	        _react2.default.createElement(
+	          'p',
+	          { className: 'time' },
+	          id
+	        )
+	      )
+	    ),
+	    _react2.default.createElement(
+	      'div',
+	      { className: 'anon_text_container' },
+	      _react2.default.createElement(
+	        'span',
+	        { className: 'anon_text' },
+	        text
+	      )
+	    ),
+	    _react2.default.createElement(
+	      'div',
+	      { className: 'interactions_container' },
+	      _react2.default.createElement('span', {
+	        className: 'anon_comment_input',
+	        'data-ph': 'Write a comment... ',
+	        contentEditable: 'true'
+	      }),
+	      _react2.default.createElement(
+	        'div',
+	        { className: 'anon_post_comment anon_button' },
+	        'Post comment'
+	      )
+	    )
+	  );
+	};
 	
-	var Feed = function (_React$Component) {
-	  _inherits(Feed, _React$Component);
+	Post.propTypes = {
+	  text: _react.PropTypes.string.isRequired,
+	  id: _react.PropTypes.number.isRequired
+	};
 	
-	  function Feed(props) {
-	    _classCallCheck(this, Feed);
-	
-	    return _possibleConstructorReturn(this, (Feed.__proto__ || Object.getPrototypeOf(Feed)).call(this, props));
-	  }
-	
-	  _createClass(Feed, [{
-	    key: 'render',
-	    value: function render() {
-	
-	      return _react2.default.createElement('div', null);
-	    }
-	  }]);
-	
-	  return Feed;
-	}(_react2.default.Component);
-	
-	exports.default = Feed;
+	exports.default = Post;
 
 /***/ }
 /******/ ]);

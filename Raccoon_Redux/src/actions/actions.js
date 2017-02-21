@@ -1,34 +1,17 @@
+import { ADD_POST, REPLY, VOTE, REPORT } from '../constants/types'
 // A C T I O N  T Y P E S
 
 /*
-Actions are used by dispatchers to trigger events.
+Actions are used by dispatchers to trigger events. The content
+is sent to the reducers which then handle state.
 */
 
-/*
-Composer actions:
--SUBMIT POST
-*/
-
-export const ADD_POST = 'POST'
-
-/*
-Feed actions:
--REPLY TO POST
--SUBMIT MODERATION
--REPORT
--UPVOTE
--DOWNVOTE
-*/
-
-export const REPLY = 'REPLY'
-export const REPORT = 'REPORT'
-export const VOTE = 'VOTE'
 
 // C O N S T A N T S
 
 export const VotingOptions = {
   UP_VOTE:'UP_VOTE',
-  DOWN_VOTE:'DOWN_VOTE',
+  DOWN_VOTE:'DOWN_VOTE'
 }
 
 export const ReportOptions = {
@@ -39,15 +22,16 @@ export const ReportOptions = {
 
 // A C T I O N  C R E A T O R S
 
-export function addPost(text){
+export function addPost(text, id){
+  console.log("action: ADD_POST, text: " + text)
   return {
     type: ADD_POST,
-    id: function(){ var d = new Date; return d.getTime()},
+    id,
     text
   }
 }
 
-export function reply(id, text){
+export function addReply(text, id){
   return {
     type: REPLY,
     id: id,

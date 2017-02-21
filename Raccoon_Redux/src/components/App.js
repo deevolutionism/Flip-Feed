@@ -1,18 +1,17 @@
 import React from 'react'
 import Composer from '../containers/Composer'
-import Feed from '../containers/Feed'
+import ShowPosts from '../containers/ShowPosts'
+import Feed from './Feed'
 
-export default class App extends React.Component {
-  constructor(props){
-    super(props)
-  }
+const App = () => {
 
-  render(){
     return (
       <div>
         <Composer />
-        <Feed />
+        <ShowPosts />
       </div>
     )
-  }
+
 }
+
+export default App
