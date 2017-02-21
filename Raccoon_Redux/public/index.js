@@ -68,10 +68,21 @@
 	
 	var initialState = [{
 	  text: 'hello',
-	  id: 1
+	  id: 1,
+	  comments: [{
+	    commentID: 1,
+	    reply: 'sup yo'
+	  }, {
+	    commentID: 2,
+	    reply: 'not much dawg'
+	  }]
 	}, {
 	  text: 'world',
-	  id: 2
+	  id: 2,
+	  comments: [{
+	    commentID: 1,
+	    reply: 'why?'
+	  }]
 	}];
 	
 	var store = (0, _redux.createStore)(_board2.default, initialState);
@@ -24347,22 +24358,74 @@
 	
 	reducers go here. These specify how application state should respond to actions
 	This recieves an action object and then determines what to do with the data.
+	
+	State in redux is IMMUTABLE. This means that in order to make changes to
+	existing state, a copy of the previous sate must be made and and modified upon,
+	and then that copy will replace the previous state.
+	
 	*/
 	
-	var board = function board() {
-	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-	  var action = arguments[1];
+	/*
 	
+	state looks like this:
+	[
+	  {
+	    id: 1,
+	    text: "Hello, World",
+	    comments: [
+	      {
+	        id: 2,
+	        reply: "Sup, yo"
+	      },
+	      {
+	        id: 3,
+	        reply: "Yo, yo!"
+	      }
+	    ]
+	  },
+	  ...
+	]
+	
+	state needs to look like this:
+	
+	[
+	  {
+	
+	  }
+	]
+	
+	*/
+	
+	var board = function board(state, action) {
 	  console.log('reducer recieved action:');
-	  console.log(action);
 	  switch (action.type) {
 	    case 'ADD_POST':
 	      //This action initialized by Composer.js
 	      console.log(action);
 	      return [].concat(_toConsumableArray(state), [{
 	        id: action.id,
-	        text: action.text
+	        text: action.text,
+	        comments: []
 	      }]);
+	    case 'ADD_REPLY':
+	      //return a copy of the original state with the
+	      //added comment inserted at the end of the comments array.
+	      //
+	      console.log(action);
+	      return state.map(function (post) {
+	        //if the postID matches, then add th
+	        if (action.id === post.id) {
+	          console.log('found the post the comment belongs to');
+	          console.log('here are the posts comments:');
+	          // console.log(post)
+	          // return post.comments.map( (comment) => {
+	          //   console.log(comment)
+	          //   return {...post.comments, commentID:action.commentID, reply:action.reply}
+	          // })
+	          return { id: post.id, text: post.text, comments: [].concat(_toConsumableArray(post.comments), [{ commentID: action.commentID, reply: action.text }]) };
+	        }
+	        return post;
+	      });
 	    default:
 	      console.log('store:');
 	      console.log(state);
@@ -24494,7 +24557,7 @@
 	});
 	exports.ReportOptions = exports.VotingOptions = undefined;
 	exports.addPost = addPost;
-	exports.reply = reply;
+	exports.addReply = addReply;
 	exports.vote = vote;
 	exports.report = report;
 	
@@ -24531,10 +24594,12 @@
 	  };
 	}
 	
-	function reply(id, text) {
+	function addReply(text, postID, commentID) {
+	  console.log("action: REPLY, text: " + text);
 	  return {
-	    type: _types.REPLY,
-	    id: id,
+	    type: _types.ADD_REPLY,
+	    id: postID,
+	    commentID: commentID,
 	    text: text
 	  };
 	}
@@ -24567,7 +24632,7 @@
 	-DOWNVOTE
 	*/
 	
-	var REPLY = exports.REPLY = 'REPLY';
+	var ADD_REPLY = exports.ADD_REPLY = 'ADD_REPLY';
 	var REPORT = exports.REPORT = 'REPORT';
 	var VOTE = exports.VOTE = 'VOTE';
 
@@ -34813,8 +34878,6 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _actions = __webpack_require__(234);
-	
 	var _Feed = __webpack_require__(238);
 	
 	var _Feed2 = _interopRequireDefault(_Feed);
@@ -34829,9 +34892,6 @@
 	
 	// map state to props
 	
-	/*
-	This container is for handling the state of the Feed component
-	*/
 	var mapStateToProps = function mapStateToProps(state) {
 	  console.log('recieved state');
 	  console.log(state);
@@ -34842,6 +34902,9 @@
 	
 	// map dispatch to props
 	// replies?
+	/*
+	This container is for handling the state of the Feed component
+	*/
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 	  return {};
 	};
@@ -34889,7 +34952,9 @@
 	      console.log(post);
 	      postlist.push(_react2.default.createElement(_Post2.default, {
 	        key: post.id,
-	        text: post.text
+	        text: post.text,
+	        postID: post.id,
+	        comments: post.comments
 	      }));
 	    });
 	  }
@@ -34935,17 +35000,57 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _reactRedux = __webpack_require__(183);
+	
+	var _actions = __webpack_require__(234);
+	
+	var _Comment = __webpack_require__(240);
+	
+	var _Comment2 = _interopRequireDefault(_Comment);
+	
+	var _jquery = __webpack_require__(236);
+	
+	var _jquery2 = _interopRequireDefault(_jquery);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var Post = function Post(_ref) {
-	  var text = _ref.text,
-	      id = _ref.id;
+	  var dispatch = _ref.dispatch,
+	      text = _ref.text,
+	      postID = _ref.postID,
+	      comments = _ref.comments;
 	
+	
+	  var getInput = function getInput() {
+	    var val = (0, _jquery2.default)('.anon_comment_input').text().trim();
+	    (0, _jquery2.default)('.anon_comment_input').text('');
+	    return val;
+	  };
+	
+	  var generateCommentID = function generateCommentID() {
+	    var d = new Date();
+	    return d.getTime();
+	  };
+	
+	  var commentlist = [];
+	
+	  if (comments) {
+	
+	    comments.forEach(function (comment) {
+	      console.log('generating comments list');
+	      console.log(comment);
+	      commentlist.push(_react2.default.createElement(_Comment2.default, {
+	        key: comment.commentID,
+	        commentID: comment.commentID,
+	        text: comment.reply
+	      }));
+	    });
+	  }
 	
 	  var icon = 'icon-48.png';
 	  return _react2.default.createElement(
 	    'div',
-	    { className: 'anon_compose anon_container', id: id },
+	    { className: 'anon_compose anon_container', id: postID },
 	    _react2.default.createElement(
 	      'div',
 	      { className: 'op_container' },
@@ -34961,7 +35066,7 @@
 	        _react2.default.createElement(
 	          'p',
 	          { className: 'time' },
-	          id
+	          postID
 	        )
 	      )
 	    ),
@@ -34984,19 +35089,62 @@
 	      }),
 	      _react2.default.createElement(
 	        'div',
-	        { className: 'anon_post_comment anon_button' },
+	        { className: 'anon_comment_button', onClick: function onClick() {
+	            dispatch((0, _actions.addReply)(getInput(), postID, generateCommentID()));
+	          } },
 	        'Post comment'
 	      )
+	    ),
+	    commentlist
+	  );
+	};
+	
+	//connect the component to the store to give it access
+	//to dispatch
+	
+	// import ShowComments from '../containers/ShowComments'
+	exports.default = (0, _reactRedux.connect)()(Post);
+
+/***/ },
+/* 240 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// import ShowComments from '../containers/ShowComments'
+	// import $ from 'jquery'
+	
+	
+	var Comment = function Comment(_ref) {
+	  var text = _ref.text,
+	      commentID = _ref.commentID;
+	
+	
+	  var icon = 'icon-48.png';
+	  return _react2.default.createElement(
+	    'div',
+	    { id: commentID },
+	    _react2.default.createElement(
+	      'p',
+	      null,
+	      text
 	    )
 	  );
 	};
 	
-	Post.propTypes = {
-	  text: _react.PropTypes.string.isRequired,
-	  id: _react.PropTypes.number.isRequired
-	};
-	
-	exports.default = Post;
+	//connect the component to the store to give it access
+	//to dispatch
+	exports.default = Comment;
 
 /***/ }
 /******/ ]);

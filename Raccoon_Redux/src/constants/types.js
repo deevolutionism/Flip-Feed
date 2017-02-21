@@ -9,6 +9,6 @@ Feed actions:
 -DOWNVOTE
 */
 
-export const REPLY = 'REPLY'
+export const ADD_REPLY = 'ADD_REPLY'
 export const REPORT = 'REPORT'
 export const VOTE = 'VOTE'

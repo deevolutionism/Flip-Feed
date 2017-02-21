@@ -8,11 +8,27 @@ import App from './components/App'
 const initialState = [
   {
     text: 'hello',
-    id: 1
+    id: 1,
+    comments:[
+      {
+        commentID:1,
+        reply: 'sup yo'
+      },
+      {
+        commentID:2,
+        reply: 'not much dawg'
+      }
+    ]
   },
   {
     text: 'world',
-    id: 2
+    id: 2,
+    comments:[
+      {
+        commentID:1,
+        reply: 'why?'
+      }
+    ]
   }
 ]
 

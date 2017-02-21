@@ -1,3 +1,7 @@
+p {
+  color: white;
+}
+
 .anon_composer {
   background-color: black;
   padding: 10px 10px 10px 10px;
@@ -110,7 +114,7 @@
 }
 
 .anon_comment_button:hover {
-  cursor: not-allowed;
+  cursor: pointer;
 }
 
 .anon_button:hover {

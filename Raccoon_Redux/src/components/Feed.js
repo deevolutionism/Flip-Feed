@@ -6,7 +6,7 @@ import Post from './Post'
 const Feed = ({posts}) => {
 
   var postlist = []
-  
+
     if(posts){
 
       posts.forEach( (post) => {
@@ -16,6 +16,8 @@ const Feed = ({posts}) => {
           <Post
             key={post.id}
             text={post.text}
+            postID={post.id}
+            comments={post.comments}
           />
         )
       });

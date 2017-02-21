@@ -1,17 +1,50 @@
 import React, { PropTypes } from 'react'
-import ShowPosts from '../containers/ShowPosts'
+import { connect } from 'react-redux'
+import { addReply } from '../actions/actions'
+import Comment from './Comment'
+// import ShowComments from '../containers/ShowComments'
+import $ from 'jquery'
 
-const Post = ({text,id}) => {
 
+const Post = ({dispatch,text,postID,comments}) => {
+
+  var getInput = () => {
+    let val = $('.anon_comment_input').text().trim()
+    $('.anon_comment_input').text('')
+    return val
+  }
+
+  var generateCommentID = () => {
+    let d = new Date()
+    return d.getTime()
+  }
+
+  var commentlist = []
+
+    if(comments){
+
+      comments.forEach( (comment) => {
+        console.log('generating comments list');
+        console.log(comment)
+        commentlist.push(
+          <Comment
+            key={comment.commentID}
+            commentID={comment.commentID}
+            text={comment.reply}
+          />
+        )
+      });
+
+    }
 
   const icon = 'icon-48.png'
   return (
-    <div className="anon_compose anon_container" id={id}>
+    <div className="anon_compose anon_container" id={postID}>
       <div className="op_container">
         <img className="icon" src={icon}/>
         <div className="op">
           <p className = "name"> Racoon</p>
-          <p className = "time">{id}</p>
+          <p className = "time">{postID}</p>
         </div>
       </div>
       <div className="anon_text_container">
@@ -23,17 +56,14 @@ const Post = ({text,id}) => {
           data-ph="Write a comment... "
           contentEditable="true"
         />
-        <div className="anon_comment_button">Post comment</div>
+        <div className="anon_comment_button" onClick={()=>{dispatch(addReply(getInput(),postID,generateCommentID()))}}>Post comment</div>
       </div>
-      <ShowComments/>
+        {commentlist}
     </div>
   )
 
 }
 
-Post.propTypes = {
-  text: PropTypes.string.isRequired,
-  id: PropTypes.number.isRequired
-}
-
-export default Post
+//connect the component to the store to give it access
+//to dispatch
+export default connect()(Post)

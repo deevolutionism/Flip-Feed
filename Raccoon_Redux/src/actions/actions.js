@@ -1,4 +1,4 @@
-import { ADD_POST, REPLY, VOTE, REPORT } from '../constants/types'
+import { ADD_POST, ADD_REPLY, VOTE, REPORT } from '../constants/types'
 // A C T I O N  T Y P E S
 
 /*
@@ -31,10 +31,12 @@ export function addPost(text, id){
   }
 }
 
-export function addReply(text, id){
+export function addReply(text, postID, commentID) {
+  console.log("action: REPLY, text: " + text)
   return {
-    type: REPLY,
-    id: id,
+    type: ADD_REPLY,
+    id: postID,
+    commentID: commentID,
     text
   }
 }
