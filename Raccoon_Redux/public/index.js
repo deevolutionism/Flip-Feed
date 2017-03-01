@@ -24461,6 +24461,10 @@
 	
 	var _Feed2 = _interopRequireDefault(_Feed);
 	
+	var _ShowSubBoards = __webpack_require__(241);
+	
+	var _ShowSubBoards2 = _interopRequireDefault(_ShowSubBoards);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var App = function App() {
@@ -24468,6 +24472,7 @@
 	  return _react2.default.createElement(
 	    'div',
 	    null,
+	    _react2.default.createElement(_ShowSubBoards2.default, null),
 	    _react2.default.createElement(_Composer2.default, null),
 	    _react2.default.createElement(_ShowPosts2.default, null)
 	  );
@@ -24535,7 +24540,7 @@
 	      ),
 	      _react2.default.createElement(
 	        'button',
-	        { className: 'anon_button', id: 'postButton', type: 'button', onClick: function onClick() {
+	        { className: 'anon_button anon_postButton', id: 'postButton', type: 'button', onClick: function onClick() {
 	            dispatch((0, _actions.addPost)(getInput(), generateID()));
 	          } },
 	        'Post'
@@ -24603,6 +24608,14 @@
 	    text: text
 	  };
 	}
+	
+	// export function switchBoard(subBoard){
+	//   console.log(`${subBoard} sub-board requested`);
+	//   return {
+	//     type: SWITCH_BOARD,
+	//
+	//   }
+	// }
 	
 	function vote(options) {
 	  return { type: _types.VOTE, options: options };
@@ -34901,7 +34914,6 @@
 	};
 	
 	// map dispatch to props
-	// replies?
 	/*
 	This container is for handling the state of the Feed component
 	*/
@@ -34966,23 +34978,6 @@
 	    postlist
 	  );
 	};
-	
-	// {
-	//   posts.map( post =>
-	//     <Post
-	//       key={post.id}
-	//       text={post.text}
-	//       {...post}
-	//     />
-	//   )
-	// }
-	
-	// Feed.propTypes = {
-	//   posts: PropTypes.arrayOf(PropTypes.shape({
-	//     id:PropTypes.number.isRequired,
-	//     text:PropTypes.string.isRequired
-	//   }).isRequired).isRequired
-	// }
 	
 	exports.default = Feed;
 
@@ -35072,6 +35067,11 @@
 	    ),
 	    _react2.default.createElement(
 	      'div',
+	      { className: 'moderation_tools' },
+	      _react2.default.createElement('img', { src: 'flag.png' })
+	    ),
+	    _react2.default.createElement(
+	      'div',
 	      { className: 'anon_text_container' },
 	      _react2.default.createElement(
 	        'span',
@@ -35089,10 +35089,17 @@
 	      }),
 	      _react2.default.createElement(
 	        'div',
-	        { className: 'anon_comment_button', onClick: function onClick() {
+	        { className: 'anon_button', onClick: function onClick() {
 	            dispatch((0, _actions.addReply)(getInput(), postID, generateCommentID()));
 	          } },
 	        'Post comment'
+	      ),
+	      _react2.default.createElement(
+	        'div',
+	        { className: 'anon_button anon_showComments' },
+	        'Show Comments (',
+	        comments.length,
+	        ')'
 	      )
 	    ),
 	    commentlist
@@ -35145,6 +35152,99 @@
 	//connect the component to the store to give it access
 	//to dispatch
 	exports.default = Comment;
+
+/***/ },
+/* 241 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _SubBoard = __webpack_require__(242);
+	
+	var _SubBoard2 = _interopRequireDefault(_SubBoard);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	/* Generates a list of posts. */
+	
+	var ShowSubBoards = function ShowSubBoards() {
+	
+	  //static subboard list for now...
+	  //maybe this will be dynamic later on.
+	  var subBoards = ['POLITICS', 'RANDOM', 'QA'];
+	  var subBoardList = [];
+	
+	  subBoards.forEach(function (subBoard) {
+	    subBoardList.push(_react2.default.createElement(_SubBoard2.default, {
+	      subBoard: subBoard
+	    }));
+	  });
+	
+	  return _react2.default.createElement(
+	    'div',
+	    null,
+	    _react2.default.createElement(
+	      'ul',
+	      null,
+	      subBoardList
+	    )
+	  );
+	};
+	
+	exports.default = ShowSubBoards;
+
+/***/ },
+/* 242 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRedux = __webpack_require__(183);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// import { switchBoard } from '../actions/switchBoard'
+	// import ShowComments from '../containers/ShowComments'
+	// import $ from 'jquery'
+	
+	
+	var SubBoard = function SubBoard(_ref) {
+	  var dispatch = _ref.dispatch,
+	      subBoard = _ref.subBoard;
+	
+	
+	  return _react2.default.createElement(
+	    'li',
+	    { className: 'boardtype', key: subBoard, onClick: function onClick() {
+	        dispatch(switchBoard(subBoard));
+	      } },
+	    _react2.default.createElement(
+	      'p',
+	      null,
+	      subBoard
+	    )
+	  );
+	};
+	
+	//connect the component to the store to give it access
+	//to dispatch
+	exports.default = (0, _reactRedux.connect)()(SubBoard);
 
 /***/ }
 /******/ ]);

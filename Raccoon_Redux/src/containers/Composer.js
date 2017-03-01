@@ -29,7 +29,7 @@ const Composer = ({dispatch}) => {
         >
         </span>
         <p className="composer_input">This post will be completely anonymous. Speak your mind.</p>
-        <button className="anon_button" id="postButton" type="button" onClick={()=>{dispatch(addPost(getInput(), generateID()))}}>Post</button>
+        <button className="anon_button anon_postButton" id="postButton" type="button" onClick={()=>{dispatch(addPost(getInput(), generateID()))}}>Post</button>
       </div>
     </div>
   )

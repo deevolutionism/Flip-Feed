@@ -1,5 +1,10 @@
 p {
   color: white;
+  font-family: helvetica;
+}
+
+div {
+  font-family: helvetica;
 }
 
 .anon_composer {
@@ -36,6 +41,7 @@ p {
   margin-bottom: 10px;
   padding: 10px;
   background-color: black;
+  border-radius: 2px;
   box-shadow: 0px 0px 1px 2px white;
 }
 
@@ -46,7 +52,7 @@ p {
   border: none;
   border-top: 1px solid white;
   border-bottom: 1px solid white;
-  background-color: black;
+  background-color: transparent;
   display: block;
   height: 100%;
   font-size: 42px;
@@ -61,7 +67,7 @@ p {
 .anon_inputbox[contenteditable=true] {
   padding: 10px 5px;
   font-size: 42px;
-  background-color: black;
+  background-color: transparent;
   border: none;
   color: white;
 }
@@ -72,7 +78,7 @@ p {
   padding: 25px 0px;
   border: none;
   border: 1px solid white;
-  background-color: black;
+  background-color: transparent;
   display: block;
   height: 100%;
   font-size: 12px;
@@ -93,7 +99,7 @@ p {
 }
 
 .anon_button {
-  background-color: black;
+  background-color: transparent;
   border: 1px solid white;
   border-radius: 2px;
   padding: 5px 10px;
@@ -102,15 +108,28 @@ p {
   font-weight:bold;
 }
 
-.anon_comment_button {
-  background-color: black;
+.anon_button {
+  background-color: transparent;
   border: 1px solid white;
   border-radius: 2px;
   padding: 5px 10px;
+  display: inline-block;
   float: inherit;
-  width: 100px;
+  min-width: 100px;
   color: white;
   font-weight:bold;
+}
+
+.anon_showComments {
+  float: right;
+}
+
+.anon_postComment {
+  float: right;
+}
+
+.anon_postButton {
+  float: right;
 }
 
 .anon_comment_button:hover {
@@ -160,7 +179,7 @@ p {
 }
 
 .op_container {
-  display:flex;
+  display:inline-block;
 }
 
 .op {
@@ -175,4 +194,34 @@ p {
 
 [contentEditable=true]:empty:not(:focus)::before {
         content:attr(data-ph)
+}
+
+.moderation_tools {
+  float: right;
+}
+
+.moderation_tools img {
+  border: 1px solid white;
+  border-radius: 2px;
+  padding: 10px 30px;
+  height: 24px;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  background-color: black;
+  display: inline-block;
+  margin: 10px 10px 10px 0;
+  min-width: 100px;
+  padding: 10px;
+  text-align: center;
+  list-style-type: none;
+}
+
+li:hover {
+  cursor: pointer;
 }

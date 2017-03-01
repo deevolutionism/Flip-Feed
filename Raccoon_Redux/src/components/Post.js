@@ -47,6 +47,9 @@ const Post = ({dispatch,text,postID,comments}) => {
           <p className = "time">{postID}</p>
         </div>
       </div>
+      <div className="moderation_tools">
+        <img src="flag.png"/>
+      </div>
       <div className="anon_text_container">
         <span className="anon_text">{text}</span>
       </div>
@@ -56,7 +59,8 @@ const Post = ({dispatch,text,postID,comments}) => {
           data-ph="Write a comment... "
           contentEditable="true"
         />
-        <div className="anon_comment_button" onClick={()=>{dispatch(addReply(getInput(),postID,generateCommentID()))}}>Post comment</div>
+        <div className="anon_button" onClick={()=>{dispatch(addReply(getInput(),postID,generateCommentID()))}}>Post comment</div>
+        <div className="anon_button anon_showComments">Show Comments ({comments.length})</div>
       </div>
         {commentlist}
     </div>

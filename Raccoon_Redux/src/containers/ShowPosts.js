@@ -22,7 +22,6 @@ const mapStateToProps = (state) => {
 }
 
 // map dispatch to props
-// replies?
 const mapDispatchToProps = (dispatch) => {
   return {
 

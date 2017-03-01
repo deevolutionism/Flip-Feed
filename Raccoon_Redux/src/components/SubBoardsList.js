@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react'
-import Post from './Post'
+import Post from './SubBoard'
 
 /* Generates a list of posts. */
 
-const Feed = ({posts}) => {
+const SubBoardsList = ({posts}) => {
 
   var postlist = []
 
@@ -34,6 +34,7 @@ const Feed = ({posts}) => {
   )
 
 }
+
 
 
 export default Feed;

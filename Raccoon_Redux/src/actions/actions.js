@@ -41,6 +41,14 @@ export function addReply(text, postID, commentID) {
   }
 }
 
+// export function switchBoard(subBoard){
+//   console.log(`${subBoard} sub-board requested`);
+//   return {
+//     type: SWITCH_BOARD,
+//
+//   }
+// }
+
 export function vote(options){
   return {type: VOTE, options}
 }
