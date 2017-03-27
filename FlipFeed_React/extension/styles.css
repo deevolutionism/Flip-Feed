@@ -1,0 +1,172 @@
+.anon_composer {
+  background-color: black;
+  padding: 10px 10px 10px 10px;
+  margin-bottom: 10px;
+}
+
+.anon_text {
+  color: white;
+}
+
+.icon {
+  vertical-align: top;
+}
+
+.name {
+  color: white;
+  margin: 0;
+}
+
+.time {
+  margin:0;
+  display:inline-block;
+  color:lightgrey;
+  margin-top:10px;
+}
+
+.anon_text_container {
+  margin: 10px 0 10px 0;
+}
+
+.anon_container {
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: black;
+  box-shadow: 0px 0px 1px 2px white;
+}
+
+.anon_input[contenteditable=true] {
+  width: 100%;
+  margin: 10px 0px;
+  padding: 25px 0px;
+  border: none;
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
+  background-color: black;
+  display: block;
+  height: 100%;
+  font-size: 42px;
+  color: white;
+}
+
+[contenteditable=true]:empty:before {
+  content: attr(placeholder);
+  display: block; /* For Firefox */
+}
+
+.anon_inputbox[contenteditable=true] {
+  padding: 10px 5px;
+  font-size: 42px;
+  background-color: black;
+  border: none;
+  color: white;
+}
+
+[contenteditable=true].anon_comment_input{
+  width: 100%;
+  margin: 10px 0px;
+  padding: 25px 0px;
+  border: none;
+  border: 1px solid white;
+  background-color: black;
+  display: block;
+  height: 100%;
+  font-size: 12px;
+  color: white;
+}
+
+
+
+.composer_input {
+  display:inline-block;
+  color:lightgrey;
+  margin-top:10px;
+}
+
+
+.anon_input:focus {
+  outline-width: 0;
+}
+
+.anon_button {
+  background-color: black;
+  border: 1px solid white;
+  border-radius: 2px;
+  padding: 5px 10px;
+  float: right;
+  color: white;
+  font-weight:bold;
+}
+
+.anon_comment_button {
+  background-color: black;
+  border: 1px solid white;
+  border-radius: 2px;
+  padding: 5px 10px;
+  color: white;
+  font-weight:bold;
+}
+
+.anon_comment_button:hover {
+  cursor: not-allowed;
+}
+
+.anon_button:hover {
+  cursor:pointer;
+}
+
+.like {
+  display: inline-block;
+  padding: 5px;
+  color: white;
+}
+
+.dislike {
+  display: inline-block;
+  padding: 5px;
+  color: white;
+}
+
+.dislike_button {
+  margin-right: 5px;
+  color: white;
+  background: black;
+  border: 1px solid white;
+}
+
+.like_button {
+  margin-right: 5px;
+  color: white;
+  background: black;
+  border: 1px solid white;
+}
+
+.like_button:hover {
+  cursor: not-allowed;
+}
+
+.dislike_button:hover {
+  cursor: not-allowed;
+}
+
+.switch_submit {
+  margin:7px;
+}
+
+.op_container {
+  display:flex;
+}
+
+.op {
+  display:inline-block;
+  margin-left:10px;
+}
+
+.interactions_container {
+  border-top:1px solid white;
+  padding-top:10px
+}
+
+[contentEditable=true]:empty:not(:focus)::before {
+        content:attr(data-ph)
+}

@@ -1,0 +1,20 @@
+export const ADD_POST = 'ADD_POST'
+
+export const RECIEVE_POSTS = 'RECIEVE_POSTS'
+export const SELECT_SUBREDDIT = 'SELECT_SUBREDDIT'
+export const INVALIDATE_SUBREDDIT = 'INVALIDATE_SUBREDDIT'
+export const REQUEST_POSTS = 'REQUEST_POSTS'
+export const RECEIVE_POSTS = 'RECEIVE_POSTS'
+
+/*
+Feed actions:
+-REPLY TO POST
+-SUBMIT MODERATION
+-REPORT
+-UPVOTE
+-DOWNVOTE
+*/
+
+export const ADD_REPLY = 'ADD_REPLY'
+export const REPORT = 'REPORT'
+export const VOTE = 'VOTE'
